@@ -1,7 +1,8 @@
 // frontend/src/pages/HomePage.js
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const HomePage = () => {
     const [bookings, setBookings] = useState([]);
@@ -30,6 +31,9 @@ const HomePage = () => {
     return (
         <div className="flex flex-col items-center justify-center h-screen">
             <h1 className="text-4xl mb-4">Welcome to the Vehicle Rental App!</h1>
+            <Link className="text-blue-500" to="/">
+                <Button variant="contained">Book Now</Button>
+            </Link>
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>

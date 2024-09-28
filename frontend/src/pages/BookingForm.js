@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Box, Button, Step, StepLabel, Stepper, Card, CardContent } from '@mui/material';
 import { InputLabel, Select, MenuItem, Input, Checkbox } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 
 const BookingForm = () => {
@@ -121,6 +122,9 @@ const BookingForm = () => {
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <Card sx={{ width: '500px', height: '450px', display: 'flex', flexDirection: 'column' }}>
+            <Link className="text-blue-500" to="/ListBookings">
+                <Button variant="contained">View Bookings</Button>
+            </Link>
                 <CardContent sx={{ flex: 1 }}>
                     <Stepper activeStep={activeStep} alternativeLabel>
                         {steps.map((label) => (
