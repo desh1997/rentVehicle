@@ -60,9 +60,6 @@ const BookingForm = () => {
             const vehicleResponse = await axios.get(`http://localhost:5000/api/vehicles?id=${typeId}`);
             if (Array.isArray(vehicleResponse.data.data)) {
                 setVehicles(vehicleResponse.data.data); // Store fetched vehicle data
-                console.log('====================================');
-                console.log(vehicleResponse.data.data,"vehicleResponse.data.data");
-                console.log('====================================');
             } else {
                 console.error('Expected an array but got:', vehicleResponse.data);
             }
@@ -178,14 +175,6 @@ const BookingForm = () => {
                                         ))}
                                     </Select> */}
                                     <InputLabel>Type of Vehicle:</InputLabel>
-                                    {/* <Select onChange={(e) => setVehicleType(e.target.value)} value={vehicleType}>
-                                        <MenuItem value="">Select</MenuItem>
-                                        {vehicleTypes.map((type, index) => (
-                                        <MenuItem key={index} value={type}>
-                                            {typeof type === 'string' ? type : type.name || type.toString()}
-                                        </MenuItem>
-                                    ))}
-                                    </Select> */}
                                      <Select onChange={(e) => handleVehicleTypeChange(e.target.value)} value={vehicleType}>
                                         <MenuItem value="">Select</MenuItem>
                                         {vehicleTypes.map((type, index) => (
@@ -202,9 +191,10 @@ const BookingForm = () => {
                                 <div className='mb-6 pr-2 pl-2'>
                                     <InputLabel>Model:</InputLabel>
                                     <Select onChange={(e) => setModel(e.target.value)} value={model}>
-                                        <MenuItem value="">Select</MenuItem>
-                                        {Array.isArray(vehicles) && vehicles.filter(v => v.type === vehicleType).map((v) => (
-                                            <MenuItem key={v.id} value={v.model}>{v.model}</MenuItem>
+                                    {vehicles.map((type, index) => (
+                                            <MenuItem key={index} value={type.id}>
+                                                {type.name || type.toString()}
+                                            </MenuItem>
                                         ))}
                                     </Select>
                                 </div>
