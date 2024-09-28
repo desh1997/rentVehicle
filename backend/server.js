@@ -19,6 +19,9 @@ app.get('/', (req, res) => {
 const vehicleRoutes = require('./routes/vehicles');
 app.use('/api', vehicleRoutes);
 
+const vehicleTypeRoutes = require('./routes/vehicleType');
+app.use('/api', vehicleTypeRoutes);
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });

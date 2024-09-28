@@ -3,10 +3,10 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.bulkInsert('VehicleTypes', [
-      { name: 'Hatchback', createdAt: new Date(), updatedAt: new Date() },
-      { name: 'SUV', createdAt: new Date(), updatedAt: new Date() },
-      { name: 'Sedan', createdAt: new Date(), updatedAt: new Date() },
-      { name: 'Cruiser', createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Hatchback', wheel: 4, createdAt: new Date(), updatedAt: new Date() },
+      { name: 'SUV', wheel: 4, createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Sedan', wheel: 4, createdAt: new Date(), updatedAt: new Date() },
+      { name: 'Cruiser', wheel: 2, createdAt: new Date(), updatedAt: new Date() },
     ], {});
   },
 

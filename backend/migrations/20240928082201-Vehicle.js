@@ -22,11 +22,6 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL', // Adjust as necessary
       },
-      wheel: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 2,
-      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

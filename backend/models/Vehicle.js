@@ -16,11 +16,6 @@ Vehicle.init({
       model: VehicleType,
       key: 'id',
     },
-  },
-  wheel: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    defaultValue: 2,
   }
 }, {
   sequelize,
@@ -30,3 +25,10 @@ Vehicle.init({
 Vehicle.belongsTo(VehicleType, { foreignKey: 'typeId' });
 
 module.exports = Vehicle;
+
+// ,
+//   wheel: {
+//     type: DataTypes.INTEGER,
+//     allowNull: false,
+//     defaultValue: 2,
+//   }

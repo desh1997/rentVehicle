@@ -42,7 +42,7 @@ Object.keys(db).forEach(modelName => {
 
 // Define associations
 Booking.belongsTo(Vehicle, { foreignKey: 'vehicleId', as: 'vehicle' });
-Vehicle.belongsTo(VehicleType, { foreignKey: 'typeId' }); // Ensure Vehicle's association is included
+Vehicle.belongsTo(VehicleType, { foreignKey: 'typeId', as: 'vehicleType' }); // Ensure Vehicle's association is included
 
 // Set up associations for VehicleType
 VehicleType.associate = (models) => {

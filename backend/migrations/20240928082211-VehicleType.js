@@ -13,6 +13,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      wheel: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 2,
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

@@ -9,6 +9,11 @@ VehicleType.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
+  wheel: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 2,
+  }
 }, {
   sequelize,
   modelName: 'VehicleType',
