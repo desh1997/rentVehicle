@@ -166,22 +166,26 @@ const BookingForm = () => {
                         )}
                         {activeStep === 4 && (
                             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
-                                <div className='mb-6 pr-2 pl-2'>
-                                    <InputLabel>Date Range:</InputLabel>
-                                    <Input
-                                        type="date"
-                                        value={dates.start}
-                                        onChange={(e) => setDates({ ...dates, start: e.target.value })}
-                                        required
-                                    />
-                                    <Input
-                                        type="date"
-                                        value={dates.end}
-                                        onChange={(e) => setDates({ ...dates, end: e.target.value })}
-                                        required
-                                    />
+                                <div className='block mb-6 pr-2 pl-2 pt-10'>
+                                <InputLabel className='mb-6'>Date Range:</InputLabel>
+                                    <div className='mb-6'>
+                                        <Input
+                                            type="date"
+                                            value={dates.start}
+                                            onChange={(e) => setDates({ ...dates, start: e.target.value })}
+                                            required
+                                        />
+                                    </div>
+                                    <div className='mb-6'>
+                                        <Input
+                                            type="date"
+                                            value={dates.end}
+                                            onChange={(e) => setDates({ ...dates, end: e.target.value })}
+                                            required
+                                        />
+                                    </div>
+                                    {/* <Button type="button" onClick={handleSubmit}>Submit</Button> */}
                                 </div>
-                                <Button type="button" onClick={handleSubmit}>Submit</Button>
                                 </Box>
                         )}
                     </div>
@@ -190,9 +194,16 @@ const BookingForm = () => {
                     <Button disabled={activeStep === 0} onClick={handleBack}>
                         Back
                     </Button>
-                    <Button type="button" onClick={handleNext} disabled={activeStep === steps.length - 1}>
-                        Next
-                    </Button>
+                    {console.log(`activeStep: ${activeStep}`)}
+                    {activeStep !== 4 ? (
+                        <Button type="button" onClick={handleNext} disabled={activeStep === steps.length - 1}>
+                            Next
+                        </Button>
+                    ) : (
+                        <Button type="button" onClick={handleSubmit}>
+                            Submit
+                        </Button>
+                    )}
                 </Box>
                 {error && <div style={{ color: 'red' }}>{error}</div>} {/* Error message display */}
             </Card>
