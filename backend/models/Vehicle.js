@@ -19,6 +19,25 @@ Vehicle.init({
   available: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
+    defaultValue: true,
+  },
+  userId: {  // Add foreign key reference
+    type: DataTypes.INTEGER,
+    references: {
+      model: 'Users',
+      key: 'id',
+    },
+    allowNull: false,
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
   },
 }, {
   sequelize,
