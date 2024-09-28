@@ -10,6 +10,7 @@ const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
 const User = require('./User');
 const Vehicle = require('./Vehicle');
+const Registration = require('./Registration');
 
 let sequelize;
 if (config.use_env_variable) {
@@ -39,16 +40,23 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
-User.hasMany(Vehicle, {
+
+db[Registration.name] = Registration;
+
+User.hasMany(Registration, {
   foreignKey: 'userId',
-  as: 'vehicles'
+  as: 'registrations'
 });
 
-Vehicle.belongsTo(User, {
+Registration.belongsTo(Vehicle, {
+  foreignKey: 'vehicleId',
+  as: 'vehicle'
+});
+
+Registration.belongsTo(User, {
   foreignKey: 'userId',
   as: 'user'
 });
-
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

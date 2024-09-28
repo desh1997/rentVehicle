@@ -1,7 +1,8 @@
+// migrations/xxxxxx-create-vehicle-table.js
 'use strict';
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Vehicles', {
       id: {
         type: Sequelize.INTEGER,
@@ -25,14 +26,6 @@ module.exports = {
         allowNull: false,
         defaultValue: true,
       },
-      userId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Users',
-          key: 'id',
-        },
-        allowNull: false,
-      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -41,12 +34,12 @@ module.exports = {
       updatedAt: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'), // Remove ON UPDATE
       },
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Vehicles');
-  },
+  }
 };

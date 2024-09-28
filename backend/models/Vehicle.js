@@ -21,14 +21,6 @@ Vehicle.init({
     allowNull: false,
     defaultValue: true,
   },
-  userId: {  // Add foreign key reference
-    type: DataTypes.INTEGER,
-    references: {
-      model: 'Users',
-      key: 'id',
-    },
-    allowNull: false,
-  },
   createdAt: {
     type: DataTypes.DATE,
     allowNull: false,
