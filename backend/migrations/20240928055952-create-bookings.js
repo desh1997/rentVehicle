@@ -1,45 +1,51 @@
-// migrations/xxxxxx-create-vehicle-table.js
 'use strict';
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Vehicles', {
+    await queryInterface.createTable('Bookings', {
       id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
-      model: {
+      firstName: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      type: {
+      lastName: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      wheels: {
+      numberOfWheels: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      available: {
-        type: Sequelize.BOOLEAN,
+      vehicleId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Vehicles',
+          key: 'id',
+        },
+      },
+      startDate: {
+        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: true,
+      },
+      endDate: {
+        type: Sequelize.DATE,
+        allowNull: false,
       },
       createdAt: {
-        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+        type: Sequelize.DATE,
       },
       updatedAt: {
-        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'), // Remove ON UPDATE
+        type: Sequelize.DATE,
       },
     });
   },
-
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Vehicles');
-  }
+  down: async (queryInterface) => {
+    await queryInterface.dropTable('Bookings');
+  },
 };

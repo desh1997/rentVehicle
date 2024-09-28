@@ -1,82 +1,31 @@
-// seeders/20230928-vehicle-seed.js
-'use strict';
+// seeders/seed.js
+const sequelize = require('../config/db'); // Use the correct path to your db.js file
+const VehicleType = require('../models/VehicleType');
+const Vehicle = require('../models/Vehicle');
 
-module.exports = {
-  up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('Vehicles', [
-      {
-        model: 'Toyota Yaris',
-        type: 'hatchback',
-        wheels: 4,
-        available: true
-      },
-      {
-        model: 'Honda Fit',
-        type: 'hatchback',
-        wheels: 4,
-        available: true
-      },
-      {
-        model: 'Ford Fiesta',
-        type: 'hatchback',
-        wheels: 4,
-        available: true
-      },
-      // SUV cars
-      {
-        model: 'Toyota RAV4',
-        type: 'suv',
-        wheels: 4,
-        available: true
-      },
-      {
-        model: 'Honda CR-V',
-        type: 'suv',
-        wheels: 4,
-        available: true
-      },
-      {
-        model: 'Ford Escape',
-        type: 'suv',
-        wheels: 4,
-        available: true
-      },
-      // Sedan cars
-      {
-        model: 'Toyota Camry',
-        type: 'sedan',
-        wheels: 4,
-        available: true
-      },
-      {
-        model: 'Honda Accord',
-        type: 'sedan',
-        wheels: 4,
-        available: true
-      },
-      {
-        model: 'Nissan Altima',
-        type: 'sedan',
-        wheels: 4,
-        available: true
-      },
-      // Bike
-      {
-        model: 'Harley-Davidson Sportster',
-        type: 'cruiser',
-        wheels: 2,
-        available: true
-      },
-      {
-        model: 'Yamaha YZF-R3',
-        type: 'sports',
-        wheels: 2,
-        available: true
-      },
-    ]);
-  },
+const seedData = async () => {
+  try {
+    await sequelize.sync({ force: true }); // Drop existing tables and create new ones
 
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('Vehicles', null, {});
+    // Seed Vehicle Types
+    const hatchback = await VehicleType.create({ name: 'Hatchback' });
+    const suv = await VehicleType.create({ name: 'SUV' });
+    const sedan = await VehicleType.create({ name: 'Sedan' });
+    const cruiser = await VehicleType.create({ name: 'Cruiser' });
+
+    // Seed Vehicles
+    await Vehicle.create({ name: 'Toyota Yaris', typeId: hatchback.id });
+    await Vehicle.create({ name: 'Honda Fit', typeId: hatchback.id });
+    await Vehicle.create({ name: 'Ford Escape', typeId: suv.id });
+    await Vehicle.create({ name: 'Toyota RAV4', typeId: suv.id });
+    await Vehicle.create({ name: 'Honda Accord', typeId: sedan.id });
+    await Vehicle.create({ name: 'Toyota Camry', typeId: sedan.id });
+    await Vehicle.create({ name: 'Harley Davidson', typeId: cruiser.id });
+
+    console.log('Database seeded successfully!');
+  } catch (error) {
+    console.error('Error seeding database:', error);
   }
 };
+
+seedData();

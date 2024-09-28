@@ -1,39 +1,27 @@
+// models/Vehicle.js
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
+const VehicleType = require('./VehicleType');
 
 class Vehicle extends Model {}
 
 Vehicle.init({
-  model: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  type: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  wheels: {
+  typeId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  available: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-    defaultValue: true,
-  },
-  createdAt: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: sequelize.literal('CURRENT_TIMESTAMP'),
-  },
-  updatedAt: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'),
+    references: {
+      model: VehicleType,
+      key: 'id',
+    },
   },
 }, {
   sequelize,
   modelName: 'Vehicle',
 });
+
+Vehicle.belongsTo(VehicleType, { foreignKey: 'typeId' });
 
 module.exports = Vehicle;
