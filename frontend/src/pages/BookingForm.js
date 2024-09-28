@@ -8,8 +8,8 @@ const BookingForm = () => {
     const [name, setName] = useState({ first: '', last: '' });
     const [wheels, setWheels] = useState('');
     const [vehicleType, setVehicleType] = useState('');
-    const [vehicleTypes, setVehicleTypes] = useState([]); // Store fetched vehicle types
-    const [vehicles, setVehicles] = useState([]); // Store fetched vehicle data
+    const [vehicleTypes, setVehicleTypes] = useState([]);
+    const [vehicles, setVehicles] = useState([]);
     const [model, setModel] = useState('');
     const [dates, setDates] = useState({ start: '', end: '' });
     const [error, setError] = useState(null);
@@ -25,7 +25,6 @@ const BookingForm = () => {
         'Select Date Range',
     ];
 
-    // Fetch vehicle types after wheels are selected
     const fetchVehicleTypes = async (wheels) => {
         try {
             const vehicleResponse = await axios.get(`http://localhost:5000/api/vehicle-type?wheels=${wheels}`);
@@ -72,12 +71,12 @@ const BookingForm = () => {
 
     const handleWheelsChange = (numWheels) => {
         setWheels(numWheels);
-        fetchVehicleTypes(numWheels); // Fetch vehicle data when wheels are selected
+        fetchVehicleTypes(numWheels); 
     };
 
     const handleVehicleTypeChange = (typeId) => {
         setVehicleType(typeId);
-        fetchVehiclesByType(typeId); // Fetch vehicles when a vehicle type is selected
+        fetchVehiclesByType(typeId); 
     };
 
     const handleNext = () => {

@@ -141,4 +141,17 @@ router.post('/booking', async (req, res) => {
     }
 });
 
+// In your booking routes file
+router.get('/bookings', async (req, res) => {
+    try {
+        const bookings = await Booking.findAll({
+            include: [{ model: Vehicle }] // Assuming you want to include vehicle details
+        });
+        return res.status(200).json(bookings);
+    } catch (err) {
+        console.error('Error fetching bookings:', err);
+        return res.status(500).json({ message: 'Error fetching bookings. Please try again later.' });
+    }
+});
+
 module.exports = router;
