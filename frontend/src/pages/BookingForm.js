@@ -120,55 +120,61 @@ const BookingForm = () => {
                             </div>
                         )}
                         {activeStep === 1 && (
-                            <div>
-                                <label>Number of Wheels:</label>
-                                <input
-                                    type="radio"
-                                    value="2"
-                                    checked={wheels === '2'}
-                                    onChange={() => setWheels('2')}
-                                /> 2
-                                <input
-                                    type="radio"
-                                    value="4"
-                                    checked={wheels === '4'}
-                                    onChange={() => setWheels('4')}
-                                /> 4
-                            </div>
+                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
+                                <div className='mb-6 pr-2 pl-2'>
+                                    <InputLabel>Number of Wheels:</InputLabel>
+                                    <Checkbox
+                                        type="radio"
+                                        value="2"
+                                        checked={wheels === '2'}
+                                        onChange={() => setWheels('2')}
+                                    /> 2
+                                    <Checkbox
+                                        type="radio"
+                                        value="4"
+                                        checked={wheels === '4'}
+                                        onChange={() => setWheels('4')}
+                                    /> 4
+                                </div>
+                            </Box>
                         )}
                         {activeStep === 2 && (
-                            <div>
-                                <label>Type of Vehicle:</label>
-                                <select onChange={(e) => setVehicleType(e.target.value)} value={vehicleType}>
+                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
+                                <div className='mb-6 pr-2 pl-2'>
+                                <InputLabel>Type of Vehicle:</InputLabel>
+                                <Select onChange={(e) => setVehicleType(e.target.value)} value={vehicleType}>
                                     <option value="">Select</option>
                                     {vehicles.filter(v => v.wheels.toString() === wheels).map(v => (
                                         <option key={v.id} value={v.type}>{v.type}</option>
                                     ))}
-                                </select>
+                                </Select>
                             </div>
+                            </Box>
                         )}
                         {activeStep === 3 && (
-                            <div>
-                                <label>Model:</label>
-                                <select onChange={(e) => setModel(e.target.value)} value={model}>
+                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
+                                <div className='mb-6 pr-2 pl-2'>
+                                <InputLabel>Model:</InputLabel>
+                                <Select onChange={(e) => setModel(e.target.value)} value={model}>
                                     <option value="">Select</option>
                                     {vehicles.filter(v => v.type === vehicleType).map(v => (
                                         <option key={v.id} value={v.model}>{v.model}</option>
                                     ))}
-                                </select>
+                                </Select>
                             </div>
+                            </Box>
                         )}
                         {activeStep === 4 && (
-                            <>
-                                <div>
-                                    <label>Date Range:</label>
-                                    <input
+                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
+                                <div className='mb-6 pr-2 pl-2'>
+                                    <InputLabel>Date Range:</InputLabel>
+                                    <Input
                                         type="date"
                                         value={dates.start}
                                         onChange={(e) => setDates({ ...dates, start: e.target.value })}
                                         required
                                     />
-                                    <input
+                                    <Input
                                         type="date"
                                         value={dates.end}
                                         onChange={(e) => setDates({ ...dates, end: e.target.value })}
@@ -176,7 +182,7 @@ const BookingForm = () => {
                                     />
                                 </div>
                                 <Button type="button" onClick={handleSubmit}>Submit</Button>
-                            </>
+                                </Box>
                         )}
                     </div>
                 </CardContent>
