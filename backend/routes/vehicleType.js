@@ -12,13 +12,9 @@ router.get('/vehicle-type', async function(req, res) {
             ...(data.wheels && { wheel: parseInt(data.wheels) }) 
         };
     
-        console.log(whereClause, "--whereClause for VehicleType--");
-    
         const vehicleTypes = await VehicleType.findAll({
             where: whereClause
         });
-    
-        console.log(vehicleTypes, "--vehicles--");
     
         res.status(200).json({ message: 'Success', data: vehicleTypes });
     } catch (err) {

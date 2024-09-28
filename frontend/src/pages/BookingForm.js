@@ -25,18 +25,28 @@ const BookingForm = () => {
     ];
 
     // Fetch vehicle types after wheels are selected
-    const fetchVehicleData = async (wheels) => {
+    const fetchVehicleTypes = async (wheels) => {
         try {
             const vehicleResponse = await axios.get(`http://localhost:5000/api/vehicle-type?wheels=${wheels}`);
             if (Array.isArray(vehicleResponse.data.data)) {
-                setVehicleTypes(vehicleResponse.data.data); // Define the state variable and its setter function
-                console.log('====================================');
-                console.log(vehicleResponse.data.data);
-                console.log('====================================');
-                // Fetch vehicle types after fetching vehicles
-                // const vehicleTypesResponse = await axios.get('http://localhost:5000/api/vehicles?wheels=${wheels}');
-                // console.log('Fetched vehicle types:', vehicleTypesResponse.data);
-                // setVehicleTypes(vehicleTypesResponse.data); // Store fetched vehicle types
+                setVehicleTypes(vehicleResponse.data.data);
+                
+                // if (vehicleResponse.status === 200) {
+                //     let vehicleTypeIdList=[];
+                //     for (let i = 0; i < vehicleResponse.data.data.length; i++) {
+                //         vehicleTypeIdList.push(vehicleResponse.data.data[i].id);
+                //     }
+                //     console.log('Fetched vehicle types:', vehicleTypeIdList);
+                //     const vehicleTypesResponse = await axios.post(`http://localhost:5000/api/vehicles`, {
+                //         vehicleTypeIds: vehicleTypeIdList
+                //     });
+                //     console.log('Fetched vehicle types:', vehicleTypesResponse.data);
+                //     setVehicles(vehicleTypesResponse.data); // Store fetched vehicle types
+                // } else {
+                //     console.error('Expected an array but got:', vehicleResponse.data);
+                //     return;
+                // }
+                
             } else {
                 console.error('Expected an array but got:', vehicleResponse.data);
             }
@@ -45,9 +55,31 @@ const BookingForm = () => {
         }
     };
 
+    const fetchVehiclesByType = async (typeId) => {
+        try {
+            const vehicleResponse = await axios.get(`http://localhost:5000/api/vehicles?id=${typeId}`);
+            if (Array.isArray(vehicleResponse.data.data)) {
+                setVehicles(vehicleResponse.data.data); // Store fetched vehicle data
+                console.log('====================================');
+                console.log(vehicleResponse.data.data,"vehicleResponse.data.data");
+                console.log('====================================');
+            } else {
+                console.error('Expected an array but got:', vehicleResponse.data);
+            }
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+
     const handleWheelsChange = (numWheels) => {
         setWheels(numWheels);
-        fetchVehicleData(numWheels); // Fetch vehicle data when wheels are selected
+        fetchVehicleTypes(numWheels); // Fetch vehicle data when wheels are selected
+    };
+
+    const handleVehicleTypeChange = (typeId) => {
+        setVehicleType(typeId);
+        fetchVehiclesByType(typeId); // Fetch vehicles when a vehicle type is selected
     };
 
     const handleNext = () => {
@@ -146,13 +178,21 @@ const BookingForm = () => {
                                         ))}
                                     </Select> */}
                                     <InputLabel>Type of Vehicle:</InputLabel>
-                                    <Select onChange={(e) => setVehicleType(e.target.value)} value={vehicleType}>
+                                    {/* <Select onChange={(e) => setVehicleType(e.target.value)} value={vehicleType}>
                                         <MenuItem value="">Select</MenuItem>
                                         {vehicleTypes.map((type, index) => (
                                         <MenuItem key={index} value={type}>
                                             {typeof type === 'string' ? type : type.name || type.toString()}
                                         </MenuItem>
                                     ))}
+                                    </Select> */}
+                                     <Select onChange={(e) => handleVehicleTypeChange(e.target.value)} value={vehicleType}>
+                                        <MenuItem value="">Select</MenuItem>
+                                        {vehicleTypes.map((type, index) => (
+                                            <MenuItem key={index} value={type.id}>
+                                                {type.name || type.toString()}
+                                            </MenuItem>
+                                        ))}
                                     </Select>
                                 </div>
                             </Box>
