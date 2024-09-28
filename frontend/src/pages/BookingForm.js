@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Box, Button, Step, StepLabel, Stepper, Card, CardContent } from '@mui/material';
 import { InputLabel, Select, MenuItem, Input, Checkbox } from '@mui/material';
 
+
 const BookingForm = () => {
     const [name, setName] = useState({ first: '', last: '' });
     const [wheels, setWheels] = useState('');
@@ -98,18 +99,20 @@ const BookingForm = () => {
             firstName: name.first,
             lastName: name.last,
             dates: {
-                startDate: dates.start, // Make sure to structure dates correctly
+                startDate: dates.start,
                 endDate: dates.end,
             },
-            model: model, // Include model if necessary
+            model: model,
         };
 
         try {
             const response = await axios.post('http://localhost:5000/api/booking', formData);
             console.log('Response from server:', response.data);
+            alert(response.data.message);
         } catch (err) {
             console.error('Error submitting form:', err);
             setError('Error submitting form. Please try again later.');
+            alert(err);
         }
     };
 
