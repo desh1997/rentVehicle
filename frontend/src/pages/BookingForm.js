@@ -111,8 +111,11 @@ const BookingForm = () => {
             alert(response.data.message);
         } catch (err) {
             console.error('Error submitting form:', err);
-            setError('Error submitting form. Please try again later.');
-            alert(err);
+        if (err.response && err.response.data && err.response.data.message) {
+            alert(err.response.data.message);
+        } else {
+            alert('Error submitting form. Please try again later.');
+        }
         }
     };
 
