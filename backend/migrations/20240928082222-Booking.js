@@ -7,6 +7,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true,
+        allowNull: false,
       },
       firstName: {
         type: Sequelize.STRING,
@@ -16,16 +17,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      numberOfWheels: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
       vehicleId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'Vehicles',
+          model: 'Vehicles', // Ensure this matches the name of your Vehicle table
           key: 'id',
         },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL', // Adjust as necessary
       },
       startDate: {
         type: Sequelize.DATE,
@@ -36,16 +35,29 @@ module.exports = {
         allowNull: false,
       },
       createdAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
       updatedAt: {
-        allowNull: false,
         type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
     });
+
+    // Add trigger to update `updatedAt` on row updates
+    await queryInterface.sequelize.query(`
+      CREATE TRIGGER update_booking_timestamp
+      AFTER UPDATE ON Bookings
+      FOR EACH ROW
+      BEGIN
+        UPDATE Bookings SET updatedAt = CURRENT_TIMESTAMP WHERE id = NEW.id;
+      END;
+    `);
   },
-  down: async (queryInterface) => {
+
+  down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('Bookings');
   },
 };

@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 
 // Import routes
 const vehicleRoutes = require('./routes/vehicles');
-app.use('/api/vehicles', vehicleRoutes);
+app.use('/api', vehicleRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

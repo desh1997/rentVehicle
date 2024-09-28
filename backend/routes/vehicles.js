@@ -1,31 +1,28 @@
-// const express = require('express');
-// const router = express.Router();
-
-// // Sample route to get all vehicles
-// router.get('/', (req, res) => {
-//     res.json([{ id: 1, model: 'Sedan' }, { id: 2, model: 'SUV' }]);
-// });
-
-// module.exports = router;
-
 const express = require('express');
-const Vehicle = require('../models/Vehicle');
+const Vehicle = require('../models/Vehicle'); // Assuming models folder has the Vehicle model
+const VehicleType = require('../models/VehicleType');
 const router = express.Router();
 
-// Get all vehicle types
-router.get('/', async (req, res) => {
-    const vehicles = await Vehicle.findAll();
-    res.json(vehicles);
+// Route to get vehicles
+router.get('/vehicles', async (req, res) => {
+    console.log("--Backend-called---");
+    const data = req.query;
+    console.log(data.wheels,"--wheels.wheels--");
+    try {
+        const whereClause = data.wheels ? { typeId: parseInt(data.wheels) } : {};
+        console.log(whereClause,"--whereClause--");
+        const vehicles = await Vehicle.findAll(
+            {
+            where: whereClause,
+            // include: [{ model: VehicleType, as: 'type' }] // Include VehicleType data
+        }
+    );
+        console.log(vehicles,"--vehicles--");
+        res.status(200).json({ message: 'Success', data: vehicles });
+    } catch (err) {
+        res.status(500).json({ error:err });
+    }
 });
 
-// Booking API
-router.post('/book', async (req, res) => {
-    const { model, startDate, endDate } = req.body;
-    
-    // Implement logic to check availability and create a booking
-    // ...
-
-    res.status(201).json({ message: 'Vehicle booked successfully!' });
-});
 
 module.exports = router;

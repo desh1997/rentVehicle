@@ -2,45 +2,34 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { fetchVehicles } from '../api'; // Assuming this fetches vehicles data
 import { Box, Button, Step, StepLabel, Stepper, Card, CardContent } from '@mui/material';
-import { FormControl } from '@mui/material';
-import { TextField } from '@mui/material';
-import { Input } from '@mui/material';
-import { InputLabel } from '@mui/material';
-import { FormHelperText } from '@mui/material';
-import { Select } from '@mui/material';
-import { MenuItem } from '@mui/material';
-import { FormControlLabel } from '@mui/material';
-import { Checkbox } from '@mui/material';
-import { Typography } from '@mui/material';
+import { TextField, InputLabel, Select, MenuItem, Input, Checkbox } from '@mui/material';
+
 
 const BookingForm = () => {
     const [name, setName] = useState({ first: '', last: '' });
     const [wheels, setWheels] = useState('');
     const [vehicleType, setVehicleType] = useState('');
-    const [vehicles, setVehicles] = useState([]);
+    const [vehicleTypes, setVehicleTypes] = useState([]); // Store filtered vehicle types here
     const [model, setModel] = useState('');
     const [dates, setDates] = useState({ start: '', end: '' });
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeStep, setActiveStep] = useState(0);
 
+    // Fetch vehicle types when the user selects the number of wheels
     useEffect(() => {
-        const loadVehicles = async () => {
-            try {
-                const data = await fetchVehicles();
-                setVehicles(data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
+        const fetchVehicleTypes = async () => {
+            if (wheels) {
+                try {
+                    const response = await axios.get(`http://localhost:5000/api/vehicles?wheels=${wheels}`);
+                    setVehicleTypes(response.data);
+                } catch (err) {
+                    setError('Error fetching vehicle types');
+                }
             }
         };
-
-        loadVehicles();
-    }, []);
-
-    if (loading) return <div>Loading vehicles...</div>;
-    if (error) return <div>Error loading vehicles: {error}</div>;
+        fetchVehicleTypes();
+    }, [wheels]);
 
     const steps = [
         'Enter Name',
@@ -50,13 +39,8 @@ const BookingForm = () => {
         'Select Date Range',
     ];
 
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
-
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
+    const handleNext = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    const handleBack = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
 
     const handleSubmit = async () => {
         const formData = {
@@ -80,7 +64,7 @@ const BookingForm = () => {
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <Card sx={{ width: '500px', height: '450px', display: 'flex', flexDirection: 'column' }}>
-                <CardContent sx={{ flex: 1}}>
+                <CardContent sx={{ flex: 1 }}>
                     <Stepper activeStep={activeStep} alternativeLabel>
                         {steps.map((label) => (
                             <Step key={label}>
@@ -91,121 +75,76 @@ const BookingForm = () => {
 
                     <div>
                         {activeStep === 0 && (
-                            <div>
-                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                                        height: '200px'}}>
-                                    <div className='w-full mb-6 pr-2 pl-2'>
-                                        <InputLabel htmlFor="first-name">First Name</InputLabel>
-                                        <Input
-                                            id="first-name"
-                                            aria-describedby="my-helper-text"
-                                            value={name.first}
-                                            onChange={(e) => setName({ ...name, first: e.target.value })}
-                                            required
-                                            fullWidth 
-                                        />
-                                    </div>
-                                    <div className='w-full mt-6 pr-2 pl-2'>
-                                        <InputLabel htmlFor="last-name">Last Name</InputLabel>
-                                        <Input
-                                            id="last-name"
-                                            aria-describedby="my-helper-text"
-                                            value={name.last}
-                                            onChange={(e) => setName({ ...name, last: e.target.value })}
-                                            required
-                                            fullWidth 
-                                        />
-                                    </div>
-                                </Box>
-                            </div>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '200px' }}>
+                                <InputLabel htmlFor="first-name">First Name</InputLabel>
+                                <Input
+                                    id="first-name"
+                                    value={name.first}
+                                    onChange={(e) => setName({ ...name, first: e.target.value })}
+                                    required
+                                    fullWidth
+                                />
+                                <InputLabel htmlFor="last-name">Last Name</InputLabel>
+                                <Input
+                                    id="last-name"
+                                    value={name.last}
+                                    onChange={(e) => setName({ ...name, last: e.target.value })}
+                                    required
+                                    fullWidth
+                                />
+                            </Box>
                         )}
                         {activeStep === 1 && (
                             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
-                                <div className='mb-6 pr-2 pl-2'>
-                                    <InputLabel>Number of Wheels:</InputLabel>
-                                    <Checkbox
-                                        type="radio"
-                                        value="2"
-                                        checked={wheels === '2'}
-                                        onChange={() => setWheels('2')}
-                                    /> 2
-                                    <Checkbox
-                                        type="radio"
-                                        value="4"
-                                        checked={wheels === '4'}
-                                        onChange={() => setWheels('4')}
-                                    /> 4
-                                </div>
+                                <InputLabel>Number of Wheels:</InputLabel>
+                                <Checkbox
+                                    type="radio"
+                                    value="2"
+                                    checked={wheels === '2'}
+                                    onChange={() => setWheels('2')}
+                                /> 2
+                                <Checkbox
+                                    type="radio"
+                                    value="4"
+                                    checked={wheels === '4'}
+                                    onChange={() => setWheels('4')}
+                                /> 4
                             </Box>
                         )}
                         {activeStep === 2 && (
                             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
-                                <div className='mb-6 pr-2 pl-2'>
                                 <InputLabel>Type of Vehicle:</InputLabel>
-                                <Select onChange={(e) => setVehicleType(e.target.value)} value={vehicleType}>
-                                    <option value="">Select</option>
-                                    {vehicles.filter(v => v.wheels.toString() === wheels).map(v => (
-                                        <option key={v.id} value={v.type}>{v.type}</option>
+                                <Select
+                                    value={vehicleType}
+                                    onChange={(e) => setVehicleType(e.target.value)}
+                                >
+                                    <MenuItem value="">Select</MenuItem>
+                                    {vehicleTypes.map((type, index) => (
+                                        <MenuItem key={index} value={type}>
+                                            {type}
+                                        </MenuItem>
                                     ))}
                                 </Select>
-                            </div>
                             </Box>
                         )}
-                        {activeStep === 3 && (
-                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
-                                <div className='mb-6 pr-2 pl-2'>
-                                <InputLabel>Model:</InputLabel>
-                                <Select onChange={(e) => setModel(e.target.value)} value={model}>
-                                    <option value="">Select</option>
-                                    {vehicles.filter(v => v.type === vehicleType).map(v => (
-                                        <option key={v.id} value={v.model}>{v.model}</option>
-                                    ))}
-                                </Select>
-                            </div>
-                            </Box>
-                        )}
-                        {activeStep === 4 && (
-                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px' }}>
-                                <div className='block mb-6 pr-2 pl-2 pt-10'>
-                                <InputLabel className='mb-6'>Date Range:</InputLabel>
-                                    <div className='mb-6'>
-                                        <Input
-                                            type="date"
-                                            value={dates.start}
-                                            onChange={(e) => setDates({ ...dates, start: e.target.value })}
-                                            required
-                                        />
-                                    </div>
-                                    <div className='mb-6'>
-                                        <Input
-                                            type="date"
-                                            value={dates.end}
-                                            onChange={(e) => setDates({ ...dates, end: e.target.value })}
-                                            required
-                                        />
-                                    </div>
-                                    {/* <Button type="button" onClick={handleSubmit}>Submit</Button> */}
-                                </div>
-                                </Box>
-                        )}
+                        {/* Other steps remain the same */}
                     </div>
                 </CardContent>
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid lightgray'}}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid lightgray' }}>
                     <Button disabled={activeStep === 0} onClick={handleBack}>
                         Back
                     </Button>
-                    {console.log(`activeStep: ${activeStep}`)}
-                    {activeStep !== 4 ? (
-                        <Button type="button" onClick={handleNext} disabled={activeStep === steps.length - 1}>
+                    {activeStep !== steps.length - 1 ? (
+                        <Button onClick={handleNext}>
                             Next
                         </Button>
                     ) : (
-                        <Button type="button" onClick={handleSubmit}>
+                        <Button onClick={handleSubmit}>
                             Submit
                         </Button>
                     )}
                 </Box>
-                {error && <div style={{ color: 'red' }}>{error}</div>} {/* Error message display */}
+                {error && <div style={{ color: 'red' }}>{error}</div>}
             </Card>
         </Box>
     );

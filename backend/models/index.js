@@ -8,9 +8,9 @@ const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
-const User = require('./User');
 const Vehicle = require('./Vehicle');
-const Registration = require('./Registration');
+const Booking = require('./Booking'); // Import Booking model
+const VehicleType = require('./VehicleType'); // Ensure this is imported
 
 let sequelize;
 if (config.use_env_variable) {
@@ -40,23 +40,29 @@ Object.keys(db).forEach(modelName => {
   }
 });
 
+// Define associations
+Booking.belongsTo(Vehicle, { foreignKey: 'vehicleId', as: 'vehicle' });
+Vehicle.belongsTo(VehicleType, { foreignKey: 'typeId' }); // Ensure Vehicle's association is included
 
-db[Registration.name] = Registration;
+// Set up associations for VehicleType
+VehicleType.associate = (models) => {
+  VehicleType.hasMany(models.Vehicle, { foreignKey: 'typeId', as: 'vehicles' });
+};
 
-User.hasMany(Registration, {
-  foreignKey: 'userId',
-  as: 'registrations'
+// Collect all models into an object
+const models = {
+  Vehicle,
+  VehicleType,
+  Booking, // Include Booking here
+};
+
+// Initialize associations for the remaining models
+Object.keys(models).forEach(modelName => {
+  if (models[modelName].associate) {
+    models[modelName].associate(models);
+  }
 });
 
-Registration.belongsTo(Vehicle, {
-  foreignKey: 'vehicleId',
-  as: 'vehicle'
-});
-
-Registration.belongsTo(User, {
-  foreignKey: 'userId',
-  as: 'user'
-});
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 

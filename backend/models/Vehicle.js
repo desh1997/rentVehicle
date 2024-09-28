@@ -17,6 +17,11 @@ Vehicle.init({
       key: 'id',
     },
   },
+  wheel: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 2,
+  }
 }, {
   sequelize,
   modelName: 'Vehicle',

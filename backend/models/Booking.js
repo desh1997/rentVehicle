@@ -14,10 +14,6 @@ Booking.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  numberOfWheels: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
   vehicleId: {
     type: DataTypes.INTEGER,
     references: {
