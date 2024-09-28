@@ -89,16 +89,23 @@ const BookingForm = () => {
 
     const handleSubmit = async () => {
         const formData = {
+            // firstName: name.first,
+            // lastName: name.last,
+            // wheels,
+            // vehicleType,
+            // model,
+            // dates,
             firstName: name.first,
             lastName: name.last,
-            wheels,
-            vehicleType,
-            model,
-            dates,
+            dates: {
+                startDate: dates.start, // Make sure to structure dates correctly
+                endDate: dates.end,
+            },
+            model: model, // Include model if necessary
         };
 
         try {
-            const response = await axios.post('https://your-backend-api-url.com/submit', formData);
+            const response = await axios.post('http://localhost:5000/api/booking', formData);
             console.log('Response from server:', response.data);
         } catch (err) {
             console.error('Error submitting form:', err);

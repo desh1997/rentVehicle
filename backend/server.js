@@ -22,6 +22,9 @@ app.use('/api', vehicleRoutes);
 const vehicleTypeRoutes = require('./routes/vehicleType');
 app.use('/api', vehicleTypeRoutes);
 
+const vehicleBookingRoutes = require('./routes/booking');
+app.use('/api', vehicleBookingRoutes);
+
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
