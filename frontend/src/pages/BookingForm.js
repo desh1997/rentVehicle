@@ -370,11 +370,13 @@ const BookingForm = () => {
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <Card sx={{ width: '500px', height: '450px', display: 'flex', flexDirection: 'column' }}>
             <div className='flex items-center justify-center'>
-            {error && <div style={{ color: 'red', padding: '10px' }}>{error}</div>}
             <Link className="text-blue-500" to="/ListBookings">
                 {/* <Button variant="contained">View Bookings</Button> */}
                 View Bookings
             </Link>
+            </div>
+            <div className='flex items-center justify-center'>
+            {error && <div style={{ color: 'red', padding: '10px' }}>{error}</div>}
             </div>
                 <CardContent sx={{ flex: 1 }}>
                     <Stepper activeStep={activeStep} alternativeLabel>
